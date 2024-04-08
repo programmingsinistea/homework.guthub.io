@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>orderingSystem</title>
+</head>
+<body onload='menuChoose("food")'>
+    <style>
+        body {
+            background-color: black;
+            color: aliceblue;
+        }
+        a:link {
+            color: #000000;
+        }   
+        a:visited {
+            color: #00FF00;
+        }  
+        a:hover {
+            color: #FF00FF;
+        }  
+        a:active {
+            color: #0000FF;
+        }
+        button {
+            color: white;
+            background-color: #000000;
+            border-color: aqua;
+        }
+        button:hover {
+            background-color: aqua;
+        }
+        #menu {
+            float: left;
+            text-align: center;
+            word-spacing: 1cm;
+            width: 100%;
+            border-style: dashed;
+            border-color: #FF00FF;
+        }
+        #menu button {
+            display: inline-block; /* Display buttons in a row */
+            margin: 5px; /* Add margin for spacing */
+        }
+        #main {
+            border-style: dotted;
+            border-color: #00FF00;
+            padding: 10px;
+        }  
+        .content {
+            border-style: dotted;
+            border-color: green;
+            border-width: 2px;
+            border-radius: 5px;
+            padding: 5px;
+            margin: 5px;    
+            display: inline-block;
+        }
+        #header {
+            border-style: dotted;
+            border-color: greenyellow;
+            text-align: center;
+        }
+        #login-container{
+            border-style: groove;
+            border-color: #FF00FF;
+            width: 100%;
+            border-radius: 5px;
+
+        }
+    </style>
+    
+    <div id="header">
+        <h1 class="text">ordering system</h1><br> 
+        <button id="login">{login}(uncompleted))</button>
+        <p id="amount-container">0</p>
+    </div>
+
+    <div id="menu">
+        <button id="food" onclick='menuChoose("food")'>{food}</button>
+        <button id="drink" onclick='menuChoose("drink")'>{drink}</button>
+        <button id="set" onclick='menuChoose("set")'>{set}</button>
+        <button id="other" onclick='menuChoose("other")'>{other}</button>
+    </div>
+
+    <div id="main">
+        <div id="button-container"></div>
+    </div>
+    <div id="login-container" class=""></div>
+
+    <script>
+        let products = [
+            ["Burgers", "food", 30],
+            ["McNuggets", "other", 20],
+            ["BigMac", "food", 20],
+            ["McChicken", "other", 20],
+            ["Fries", "other", 15],
+            ["HappyMeal", "set", 60],
+            ["ApplePie", "other", 15],
+            ["Cola", "drink", 15],
+            ["Fentanyl", "drink", 15],
+            ["sprite", "drink", 15]
+        ];
+
+        let amount = 0;
+        let selectedProduct;
+        const buttonContainer = document.getElementById("button-container");
+
+
+        function buttonClick() {
+            const amountContainer = document.getElementById("amount-container");
+            amount += selectedProduct[2];
+            amountContainer.textContent = `amount:${amount}`;
+        }
+
+        function menuChoose(id) {
+            buttonContainer.innerHTML = "";
+            const foodReturn = getFoodReturn(id);
+
+            for (let i = 0; i < foodReturn.length; i++) {
+                const button = document.createElement("button");
+                button.textContent = foodReturn[i][0];
+
+                button.onclick = function () {
+                    selectedProduct = foodReturn[i];
+                    buttonClick();
+                };
+
+                buttonContainer.appendChild(button);
+            }
+        }
+
+        function getFoodReturn(id) {
+            const foodReturn = [];
+            for (let i = 0; i < products.length; i++) {
+                if (products[i][1] === id) {
+                    foodReturn.push(products[i]);
+                }
+            }
+            return foodReturn;
+        }
+
+    </script>
+</body>
+</html>
