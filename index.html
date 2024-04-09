@@ -89,28 +89,30 @@
     <div id="login-container" class=""></div>
 
     <script>
-        alert("welcome")
+        let products = [
+        ["Burgers", "food", 30],
+        ["McNuggets", "other", 20],
+        ["BigMac", "food", 20],
+        ["McChicken", "other", 20],
+        ["Fries", "other", 15],
+        ["HappyMeal", "set", 60],
+        ["ApplePie", "other", 15],  
+        ["Cola", "drink", 15],
+        ["Fentanyl", "drink", 15],
+        ["sprite", "drink", 15]
+        ];
         if(typeof(Storage) ==="undefined"){
             alert("local storage not supported in the browser");
         } 
         if(localStorage.length){
             alert("no localSave founded")
+            let productJson = JSON.stringify(products);
+            
+
         }else(
             alert("localSave founded")
         )
 
-        let products = [
-            ["Burgers", "food", 30],
-            ["McNuggets", "other", 20],
-            ["BigMac", "food", 20],
-            ["McChicken", "other", 20],
-            ["Fries", "other", 15],
-            ["HappyMeal", "set", 60],
-            ["ApplePie", "other", 15],  
-            ["Cola", "drink", 15],
-            ["Fentanyl", "drink", 15],
-            ["sprite", "drink", 15]
-        ];
 
         let amount = 0;
         let selectedProduct;
