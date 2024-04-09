@@ -93,9 +93,11 @@
         if(typeof(Storage) ==="undefined"){
             alert("local storage not supported in the browser");
         } 
-        if(localStorage.length === 0){
+        if(localStorage.length){
+            alert("localSave founded");
+        }else(
             alert("no localSave founded")
-        }
+        )
 
         let products = [
             ["Burgers", "food", 30],
