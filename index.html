@@ -7,8 +7,8 @@
 <body onload='menuChoose("food")'>
     <style>
         body {
-            background-color: black;
-            color: aliceblue;
+            background-color: rgb(218, 217, 172);
+            color: black;
         }
         a:link {
             color: #000000;
@@ -24,11 +24,11 @@
         }
         button {
             color: white;
-            background-color: #000000;
-            border-color: aqua;
+            background-color: brown;
+            border-color: black;
         }
         button:hover {
-            background-color: aqua;
+            background-color:rgb(80, 48, 48);
         }
         #menu {
             float: left;
@@ -36,7 +36,7 @@
             word-spacing: 1cm;
             width: 100%;
             border-style: dashed;
-            border-color: #FF00FF;
+            border-color: brown;
         }
         #menu button {
             display: inline-block; /* Display buttons in a row */
@@ -44,12 +44,12 @@
         }
         #main {
             border-style: dotted;
-            border-color: #00FF00;
+            border-color: brown;
             padding: 10px;
         }  
         .content {
             border-style: dotted;
-            border-color: green;
+            border-color: brown;
             border-width: 2px;
             border-radius: 5px;
             padding: 5px;
@@ -58,12 +58,12 @@
         }
         #header {
             border-style: dotted;
-            border-color: greenyellow;
+            border-color: brown;
             text-align: center;
         }
         #login-container{
             border-style: groove;
-            border-color: #FF00FF;
+            border-color:   brown;
             width: 100%;
             border-radius: 5px;
 
@@ -89,6 +89,12 @@
     <div id="login-container" class=""></div>
 
     <script>
+        alert("welcome")
+        if(typeof(Storage) ==="undefined"){
+            alert("local storage not supported in the browser");
+        } 
+    
+
         let products = [
             ["Burgers", "food", 30],
             ["McNuggets", "other", 20],
