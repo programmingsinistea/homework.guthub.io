@@ -103,15 +103,16 @@
         ];
         if(typeof(Storage) ==="undefined"){
             alert("local storage not supported in the browser");
-        } 
-        if(localStorage.length){
-            alert("no localSave founded")
-            let productJson = JSON.stringify(products);
-            
-
-        }else(
-            alert("localSave founded")
-        )
+        } else{
+            if(localStorage.length){
+                alert("no localSave founded")
+                let productJson = JSON.stringify(products);
+    
+                
+            }else(
+                alert("localSave founded")
+                )            
+            }
 
 
         let amount = 0;
