@@ -90,16 +90,15 @@
 
     <script>
         let products = [
-        ["Burgers", "food", 30],
-        ["McNuggets", "other", 20],
-        ["BigMac", "food", 20],
-        ["McChicken", "other", 20],
-        ["Fries", "other", 15],
-        ["HappyMeal", "set", 60],
-        ["ApplePie", "other", 15],  
-        ["Cola", "drink", 15],
-        ["Fentanyl", "drink", 15],
-        ["sprite", "drink", 15]
+        ["food", "Burgers", 30],
+        ["food", "BigMac", 20], 
+        ["other", "McChicken", 20],
+        ["other", "McNuggets", 20],
+        ["other", "Fries", 15],
+        ["set", "HappyMeal", 60],
+        ["other", "ApplePie", 15],
+        ["drink", "Cola", 15],
+        ["drink", "sprite", 15]  
         ];
         if(typeof(Storage) ==="undefined"){
             alert("local storage not supported in the browser");
@@ -129,7 +128,7 @@
 
             for (let i = 0; i < foodReturn.length; i++) {
                 const button = document.createElement("button");
-                button.textContent = foodReturn[i][0];
+                button.textContent = foodReturn[i][1];
 
                 button.onclick = function () {
                     selectedProduct = foodReturn[i];
@@ -143,7 +142,7 @@
         function getFoodReturn(id) {
             const foodReturn = [];
             for (let i = 0; i < products.length; i++) {
-                if (products[i][1] === id) {
+                if (products[i][0] === id) {
                     foodReturn.push(products[i]);
                 }
             }
