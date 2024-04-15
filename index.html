@@ -7,7 +7,7 @@
 <body onload='menuChoose("food")'>
     <style>
         body {
-            background-color: rgb(218, 217, 172);
+            background-color: rgb(220, 219, 186);
             color: black;
         }
         a:link {
@@ -89,32 +89,39 @@
     <div id="login-container" class=""></div>
 
     <script>
-        let products = [
-        ["food", "Burgers", 30],
-        ["food", "BigMac", 20], 
-        ["other", "McChicken", 20],
-        ["other", "McNuggets", 20],
-        ["other", "Fries", 15],
-        ["set", "HappyMeal", 60],
-        ["other", "ApplePie", 15],
-        ["drink", "Cola", 15],
-        ["drink", "sprite", 15]  
-        ];
-        if(typeof(Storage) ==="undefined"){
-            alert("local storage not supported in the browser");
-        } else{
-            if(localStorage.length){
-                alert("localSave founded")
-            }else(
-                alert("no localSave founded")
-                )            
+    let products = {
+        food: [["Burgers", 30],["BigMac", 20]],
+        other: [["McChickez`", 20],["McNuggets", 20],["Fries", 15],["ApplePie", 15]],
+        set: ["HappyMeal", 60],
+        drink: [["Cola", 15],["sprite", 15]]
+        }; 
+    function getFoodReturn(id) {
+            const foodReturn = [];
+            for (let i = 0; i < products.length; i++) {
+                if (products[i][0] === id) {
+                    foodReturn.push(products[i]);
+                }
             }
+            return foodReturn;
+        }
 
-
+        
+    if(typeof(Storage) ==="undefined"){
+        alert("local storage not supported in the browser");
+    } else{
+        if(localStorage.length){
+            alert("localSave founded")
+        }else(
+            alert("no localSave founded")
+            )            
+        }
+        
+        
         let amount = 0;
         let selectedProduct;
         const buttonContainer = document.getElementById("button-container");
-
+        
+        
 
         function buttonClick() {
             const amountContainer = document.getElementById("amount-container");
@@ -124,14 +131,13 @@
 
         function menuChoose(id) {
             buttonContainer.innerHTML = "";
-            const foodReturn = getFoodReturn(id);
 
-            for (let i = 0; i < foodReturn.length; i++) {
+            for (let i = 0; i < products[id].length; i++) {
                 const button = document.createElement("button");
-                button.textContent = foodReturn[i][1];
+                button.textContent = products[id][i][0];
 
                 button.onclick = function () {
-                    selectedProduct = foodReturn[i];
+                    selectedProduct = products[id][i][1];
                     buttonClick();
                 };
 
@@ -139,15 +145,6 @@
             }
         }
 
-        function getFoodReturn(id) {
-            const foodReturn = [];
-            for (let i = 0; i < products.length; i++) {
-                if (products[i][0] === id) {
-                    foodReturn.push(products[i]);
-                }
-            }
-            return foodReturn;
-        }
 
     </script>
 </body>
