@@ -102,15 +102,7 @@
         set: [["HappyMeal", 60],["burgerSet1",57]],
         drink: [["Cola", 15],["sprite", 15]],
         }; 
-    function getFoodReturn(id) {
-            const foodReturn = [];
-            for (let i = 0; i < products.length; i++) {
-                if (products[i][0] === id) {
-                    foodReturn.push(products[i]);
-                }
-            }
-            return foodReturn;
-        }
+    let record = {};
 
         
     if(typeof(Storage) ==="undefined"){
@@ -142,7 +134,7 @@
             for (let i = 0; i < products[id].length; i++) {
                 const button = document.createElement("button");
                 button.textContent = products[id][i][0];
-
+                
                 button.onclick = function () {
                     selectedProduct = products[id][i][1];
                     buttonClick();
