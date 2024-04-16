@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>orderingSystem</title>
-</head>
-<body onload='menuChoose("food")'>
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="utf-8">
+    <title>orderingSystem</title>
+    </head>
+    <body onload='menuChoose("food")'>
     <style>
         body {
-            background-color: rgb(220, 219, 186);
+            background-color: rgb(248, 250, 255);
             color: black;
         }
         a:link {
@@ -24,11 +24,15 @@
         }
         button {
             color: white;
-            background-color: brown;
+            background-color: rgb(42, 69, 165);
             border-color: black;
+            width: 100px;
+            height: 50px;
+
         }
         button:hover {
-            background-color:rgb(80, 48, 48);
+            background-color:rgb(32, 51, 120);
+            width: 110px;
         }
         #menu {
             float: left;
@@ -68,8 +72,11 @@
             border-radius: 5px;
 
         }
+        #pay{
+            float: right;
+        }
     </style>
-    
+
     <div id="header">
         <h1 class="text">ordering system</h1><br> 
         <button id="login">{login}(uncompleted))</button>
@@ -87,13 +94,13 @@
         <div id="button-container"></div>
     </div>
     <div id="login-container" class=""></div>
-
+    <div><button onclick="clearAmount() ">clear</button><button id="pay">pay</button></div>
     <script>
     let products = {
         food: [["Burgers", 30],["BigMac", 20]],
-        other: [["McChickez`", 20],["McNuggets", 20],["Fries", 15],["ApplePie", 15]],
-        set: ["HappyMeal", 60],
-        drink: [["Cola", 15],["sprite", 15]]
+        other: [["McChicken`", 20],["McNuggets", 20],["Fries", 15],["ApplePie", 15]],
+        set: [["HappyMeal", 60],["burgerSet1",57]],
+        drink: [["Cola", 15],["sprite", 15]],
         }; 
     function getFoodReturn(id) {
             const foodReturn = [];
@@ -117,15 +124,15 @@
         }
         
         
-        let amount = 0;
-        let selectedProduct;
+        var amount = 0;
+        let selectedProduct;                       
         const buttonContainer = document.getElementById("button-container");
         
         
 
         function buttonClick() {
             const amountContainer = document.getElementById("amount-container");
-            amount += selectedProduct[2];
+            amount += selectedProduct;
             amountContainer.textContent = `amount:${amount}`;
         }
 
@@ -140,12 +147,16 @@
                     selectedProduct = products[id][i][1];
                     buttonClick();
                 };
-
+                
                 buttonContainer.appendChild(button);
             }
         }
-
-
+        function clearAmount() {
+            amount = 0;
+            const amountContainer = document.getElementById("amount-container");
+            alert("successfully cleared")
+            amountContainer.innerHTML = `amount:${amount}`;
+}
     </script>
-</body>
-</html>
+    </body>
+    </html>
