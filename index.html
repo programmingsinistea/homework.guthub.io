@@ -96,18 +96,19 @@
     <div><button onclick="clearAmount() ">clear</button><button id="pay">pay</button></div>
     <script>
         let payment = {
-            food:{
+            food:[
 
-            },
-            cost:{
-                
-            }
+            ]
+            ,
+            cost:[
+            
+            ]
         }
     let products = {
-        food: [["Burgers", 30],["BigMac", 20]],
+        food: [["Burgers", 30],["BigMac", 20],["popcorn",24]],
         other: [["McChicken`", 20],["McNuggets", 20],["Fries", 15],["ApplePie", 15]],
-        set: [["HappyMeal", 60],["burgerSet1",57]],
-        drink: [["Cola", 15],["sprite", 15]],
+        set: [["HappyMeal", 60],["burgerSet1",57],["friesSet2",40],["mcChickenSet3",46]],
+        drink: [["Cola", 15],["sprite", 15],["lemonTea",19]],
         }; 
     let record = {};
 
@@ -124,15 +125,17 @@
         
         
         var amount = 0;
-        let selectedProduct;                       
+        
         const buttonContainer = document.getElementById("button-container");
         
         
 
-        function buttonClick() {
+        function buttonClick(name,cost) {
             const amountContainer = document.getElementById("amount-container");
-            amount += selectedProduct;
+            amount += cost;
             amountContainer.textContent = `amount:${amount}`;
+            payment.cost.push(cost);
+            payment.food.push(name);
         }
 
         function menuChoose(id) {
@@ -143,8 +146,9 @@
                 button.textContent = products[id][i][0];
                 
                 button.onclick = function () {
-                    selectedProduct = products[id][i][1];
-                    buttonClick();
+                let selectedProduct = products[id][i][1];
+                let selectedName = products[id][i][0];
+                    buttonClick(selectedName,selectedProduct);
                 };
                 
                 buttonContainer.appendChild(button);
