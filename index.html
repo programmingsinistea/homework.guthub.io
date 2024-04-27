@@ -1,165 +1,186 @@
-    <!DOCTYPE html>
-    <html>
-    <head>
+<!DOCTYPE html>
+<html>
+<head>
     <meta charset="utf-8">
     <title>orderingSystem</title>
-    </head>
-    <body onload='menuChoose("food")'>
-    <style>
-        body {
-            background-color: rgb(248, 250, 255);
-            color: black;
-        }
-        a:link {
-            color: #000000;
-        }   
-        a:visited {
-            color: #00FF00;
-        }  
-        a:hover {
-            color: #FF00FF;
-        }  
-        a:active {
-            color: #0000FF;
-        }
-        button {
-            color: white;
-            background-color: rgb(42, 69, 165);
-            border-color: black;
-            width: 100px;
-            height: 50px;
-        }
-        button:hover {
-            background-color:rgb(32, 51, 120);
-            width: 110px;
-        }
-        #menu {
-            float: left;
-            text-align: center;
-            word-spacing: 1cm;
-            width: 100%;
-            border-style: dashed;
-            border-color: brown;
-        }
-        #menu button {
-            display: inline-block; /* Display buttons in a row */
-            margin: 5px; /* Add margin for spacing */
-        }
-        #main {
-            border-style: dotted;
-            border-color: brown;
-            padding: 10px;
-        }  
-        .content {
-            border-style: dotted;
-            border-color: brown;
-            border-width: 2px;
-            border-radius: 5px;
-            padding: 5px;
-            margin: 5px;    
-            display: inline-block;
-        }
-        #header {
-            border-style: dotted;
-            border-color: brown;
-            text-align: center;
-        }
-        #login-container{
-            border-style: groove;
-            border-color:   brown;
-            width: 100%;
-            border-radius: 5px;
+</head>
+<body onload='menuChoose("food")'>
+<style>
+    body {
+        background-color: rgb(248, 250, 255);
+        color: black;
+    }
+    a:link {
+        color: #000000;
+    }   
+    a:visited {
+        color: rgb(140, 191, 221);
+    }  
+    a:hover {
+        color: #FF00FF;
+    }  
+    a:active {
+        color: #0000FF;
+    }
+    button {
+        color: white;
+        background-color: rgb(42, 69, 165);
+        border-color: black;
+        width: 100px;
+        height: 50px;
+    }
+    button:hover {
+        background-color:rgb(32, 51, 120);
+        width: 110px;
+    }
+    #menu {
+        float: left;
+        text-align: center;
+        word-spacing: 1cm;
+        width: 100%;
+        border-style: dashed;
+        border-color: brown;
+    }
+    #menu button {
+        display: inline-block; /* Display buttons in a row */
+        margin: 5px; /* Add margin for spacing */
+    }
+    #main {
+        border-style: dotted;
+        border-color: brown;
+        padding: 10px;
+        height: 200px;
+    }  
+    .content {
+        border-style: dotted;
+        border-color: brown;
+        border-width: 2px;
+        border-radius: 5px;
+        padding: 5px;
+        margin: 5px;    
+        display: inline-block;
+        height: 200px;
+    }
+    #header {
+        border-style: dotted;
+        border-color: brown;
+        text-align: center;
+    }
+    #pay {
+        float: right;
+    }
+    #foodContainer {
+        height: 200px;
+        border: #000000;
+        border-style: dotted;   
+    }
+</style>
 
-        }
-        #pay{
-            float: right;
-        }
-    </style>
+<div id="header">
+    <h1 class="text">ordering system</h1><br> 
+    <button id="login">{login}(uncompleted))</button>
+    <p id="amount-container">0</p>
+</div>
+<p1>menu :</p1>
+<div id="menu">
+    <button id="food" onclick='menuChoose("food","button-container")'>{food}</button>
+    <button id="drink" onclick='menuChoose("drink","button-container")'>{drink}</button>
+    <button id="set" onclick='menuChoose("set","button-container")'>{set}</button>
+    <button id="other" onclick='menuChoose("other","button-container")'>{other}</button>
+</div>
 
-    <div id="header">
-        <h1 class="text">ordering system</h1><br> 
-        <button id="login">{login}(uncompleted))</button>
-        <p id="amount-container">0</p>
-    </div>
+<div id="main">
+    <p1>you can order:</p1>
+    <div id="button-container"></div>
+</div>
+<div id="main" onload='menuChoose(record,"food-container")'>
+    <p1>you have ordered:</p1>
+    <div id="food-container"></div>
+</div>
+<div>
+    <button onclick="clearAmount()">clear</button>
+    <button id="pay">pay</button>
+</div>
 
-    <div id="menu">
-        <button id="food" onclick='menuChoose("food")'>{food}</button>
-        <button id="drink" onclick='menuChoose("drink")'>{drink}</button>
-        <button id="set" onclick='menuChoose("set")'>{set}</button>
-        <button id="other" onclick='menuChoose("other")'>{other}</button>
-    </div>
-
-    <div id="main">
-        <div id="button-container"></div>
-    </div>
-    <div id="login-container" class=""></div>
-    <div><button onclick="clearAmount() ">clear</button><button id="pay">pay</button></div>
-    <script>
-        let payment = {
-            food:[
-
-            ]
-            ,
-            cost:[
-            
-            ]
-        }
+<script>
+    let payment = {
+        food: [],
+        cost: []
+    };
+    let selection = "";
     let products = {
-        food: [["Burgers", 30],["BigMac", 20],["popcorn",24]],
+        food: [["Burgers", 30],["BigMac", 20],["popcorn", 24]],
         other: [["McChicken`", 20],["McNuggets", 20],["Fries", 15],["ApplePie", 15]],
         set: [["HappyMeal", 60],["burgerSet1",57],["friesSet2",40],["mcChickenSet3",46]],
         drink: [["Cola", 15],["sprite", 15],["lemonTea",19]],
-        }; 
-    let record = {};
+    }; 
+    let record = -1;
 
-        
-    if(typeof(Storage) ==="undefined"){
+    if (typeof(Storage) === "undefined") {
         alert("local storage not supported in the browser");
-    } else{
-        if(localStorage.length){
-            alert("localSave founded")
-        }else(
-            alert("no localSave founded")
-            )            
+    } else {
+        if (localStorage.length) {
+            alert("localSave founded");
+        } else {
+            alert("no localSave founded");
         }
-        
-        
-        var amount = 0;
-        
-        const buttonContainer = document.getElementById("button-container");
-        
-        
+    }
 
-        function buttonClick(name,cost) {
-            const amountContainer = document.getElementById("amount-container");
-            amount += cost;
-            amountContainer.textContent = `amount:${amount}`;
-            payment.cost.push(cost);
-            payment.food.push(name);
-        }
+    var amount = 0;
+    const amountContainer = document.getElementById("amount-container");
+    
+    function buttonClick(name, cost) {
+        amount += cost;
+        amountContainer.textContent = `amount:${amount}`;
+        payment.cost.push(cost);
+        payment.food.push(name);
+    }
 
-        function menuChoose(id) {
-            buttonContainer.innerHTML = "";
-
-            for (let i = 0; i < products[id].length; i++) {
-                const button = document.createElement("button");
-                button.textContent = products[id][i][0];
+    function menuChoose(id, target) {
+        const buttonContainer = document.getElementById(target);
+        buttonContainer.innerHTML = "";
+        switch (target) {
+            case "button-container":
+                for (let i = 0; i < products[id].length; i++) {
+                    const button = document.createElement("button");
+                    button.textContent = products[id][i][0];
+                    button.onclick = function () {
+                        let selectedProduct= products[id][i][1];
+                        let selectedName = products[id][i][0];
+                        buttonClick(selectedName, selectedProduct);
+                        menuChoose(record,"food-container")
+                    };
+                    buttonContainer.appendChild(button);
+                }
+                break;
                 
-                button.onclick = function () {
-                let selectedProduct = products[id][i][1];
-                let selectedName = products[id][i][0];
-                    buttonClick(selectedName,selectedProduct);
-                };
-                
-                buttonContainer.appendChild(button);
-            }
+            case "food-container":
+                for (let i = 0; i < payment.food.length; i++) {
+                    const button = document.createElement("button");
+                    button.textContent = payment.food[i];
+                    button.style.color = "white";
+                    i === record? button.style.backgroundColor = "rgb(140, 191, 221)":button.style.backgroundColor = "rgb(42, 69, 165)";
+                    button.onclick = function () {
+                        record = i;
+                        menuChoose(0, "food-container");
+                    };
+                    buttonContainer.appendChild(button);
+                }
+            break;
+
         }
-        function clearAmount() {
-            amount = 0;
-            const amountContainer = document.getElementById("amount-container");
-            alert("successfully cleared")   
-            amountContainer.innerHTML = `amount:${amount}`;
-}
-    </script>
-    </body>
-    </html>
+    }
+
+    function clearAmount() {
+        const foodContainer = document.getElementById("food-container");
+        const amountContainer = document.getElementById("amount-container");
+        amount -= payment.cost[record];
+        payment.food.splice(record,1);
+        payment.cost.splice(record,1);
+        menuChoose(record,"food-container")
+        alert("successfully cleared");
+        amountContainer.innerHTML = `amount:${amount}`;
+    }
+</script>
+</body>
+</html>
