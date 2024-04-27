@@ -175,12 +175,15 @@
     function clearAmount() {
         const foodContainer = document.getElementById("food-container");
         const amountContainer = document.getElementById("amount-container");
-        amount -= payment.cost[record];
+        if(payment.cost[record]){        
+        amount -= payment.cost[record]; 
         payment.food.splice(record,1);
         payment.cost.splice(record,1);
         menuChoose(record,"food-container")
         amountContainer.innerHTML = `amount:${amount}`;
+        }
     }
+
 </script>
 </body>
 </html>
