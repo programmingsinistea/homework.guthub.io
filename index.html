@@ -98,7 +98,7 @@
     <div id="food-container"></div>
 </div>
 <div>
-    <button onclick="clearAmount()">clear</button>
+    <button onclick="clearAmount()">clear</button>    <button onclick="clearAmount('all')">clearAll</button>
     <button id="pay">pay</button>
 </div>
 
@@ -172,19 +172,30 @@
         }
     }
 
-    function clearAmount() {
+    function clearAmount(mode) {
+        let valueS = 0;
         const foodContainer = document.getElementById("food-container");
         const amountContainer = document.getElementById("amount-container");
-        if(payment.cost[record]){        
-        amount -= payment.cost[record]; 
-        payment.food.splice(record,1);
-        payment.cost.splice(record,1);
-        menuChoose(record,"food-container")
-        amountContainer.innerHTML = `amount:${amount}`;
+        if(payment.cost[record]){    
+            if(mode=== "all"){
+                payment.food.filter((foods)=>{
+                    //food === payment.food[record]? valueS += payment.cost[payment.food.findIndex(food === food)]:valueS+=0;
+                    return foods !== payment.food[record];
+                })
+                
+            }else{
+                amount -= payment.cost[record]; 
+                payment.food.splice(record,1);
+                payment.cost.splice(record,1);
+        }    
+            amountContainer.innerHTML = `amount:${amount}`;
+        }else if(payment.cost[record-1]){
+            record -= 1;
         }else{
             record = -1;
         }
-    }
+        menuChoose(record,"food-container")
+        }
 
 </script>
 </body>
