@@ -48,8 +48,15 @@
     #main {
         border-style: dotted;
         border-color: brown;
-        padding: 10px;
         height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        max-height: 150px;
+        overflow-y: auto;
+        padding: 5px;
+        margin: 10px;
+        text-align: center;
     }  
     .content {
         border-style: dotted;
@@ -69,11 +76,11 @@
     #pay {
         float: right;
     }
-    #foodContainer {
-        height: 200px;
-        border: #000000;
-        border-style: dotted;   
+
+    #backButton{
+        top: 0px;
     }
+
 </style>
 
 <div id="header">
@@ -94,15 +101,17 @@
     <div id="button-container"></div>
 </div>
 <div id="main" onload='menuChoose(record,"food-container")'>
-    <p1>you have ordered:</p1>
+    <p1 id="textIn">you have ordered:</p1>
     <div id="food-container"></div>
 </div>
-<div>
+<div id = "backButton">
     <button onclick="clearAmount()">clear</button>    <button onclick="clearAmount('all')">clearAll</button>
-    <button id="pay">pay</button>
+    <button id="pay" onclick="menuChoose(0,'food-container',true)">pay</button>
 </div>
 
 <script>
+    let discounted = 100;
+    let payCase = 0;
     let payment = {
         food: [],
         cost: []
@@ -114,6 +123,12 @@
         set: [["HappyMeal", 60],["burgerSet1",57],["friesSet2",40],["mcChickenSet3",46]],
         drink: [["Cola", 15],["sprite", 15],["lemonTea",19],["appleJuice",18],]
     }; 
+    let promoCode = [
+        ["promoCode2024",90],
+        ["helloWorld",80],
+        ["202555440",85],
+        ["orderingSystem",75],
+    ]
     let record = -1;
 /*
     if (typeof(Storage) === "undefined") {
@@ -126,7 +141,11 @@
         }
     }
     */
-
+    function resetPay(){
+        payCase = 0;
+        document.getElementById("pay").innerHTML = "pay";
+        document.getElementById("textIn").innerHTML = "you have ordered:"
+    }
     var amount = 0;
     const amountContainer = document.getElementById("amount-container");
     
@@ -137,12 +156,13 @@
         payment.food.push(name);
     }
 
-    function menuChoose(id, target) {
+    function menuChoose(id, target,cases) {
         const buttonContainer = document.getElementById(target);
         buttonContainer.innerHTML = "";
         switch (target) {
             case "button-container":
-                for (let i = 0; i < products[id].length; i++) {
+                resetPay()
+                for (let i = 0; i < products[id].length;i++) {
                     const button = document.createElement("button");
                     button.textContent = products[id][i][0];
                     button.onclick = function () {
@@ -156,18 +176,68 @@
                 break;
                 
             case "food-container":
-                for (let i = 0; i < payment.food.length; i++) {
-                    const button = document.createElement("button");
-                    button.textContent = payment.food[i];
-                    button.style.color = "white";
-                    i === record? button.style.backgroundColor = "rgb(140, 191, 221)":button.style.backgroundColor = "rgb(42, 69, 165)";
-                    button.onclick = function () {
-                        record = i;
-                        menuChoose(0, "food-container");
-                    };
-                    buttonContainer.appendChild(button);
+                if(cases){
+                    if(payCase === 1){
+                        const input = document.createElement("input");
+                        input.id = "code";
+                        input.type = "text";
+                        const br =  document.createElement("br");
+                        const button = document.createElement("button");
+                        button.innerHTML = "summit";
+                        button.onclick = () => {
+                            const V = document.getElementById("code").value;
+                            for(let i = 0 ; i < promoCode.length; i++ ){
+                                if(promoCode[i].includes(V)){
+                                    discounted = products[i][1];
+                                    break;
+                                }
+                            }
+                        }
+                        buttonContainer.appendChild(input);
+                        buttonContainer.appendChild(br);
+                        buttonContainer.appendChild(button);
+                        document.getElementById("pay").innerHTML = "next";
+                        document.getElementById("textIn").innerHTML = "enter promo code.(optional)"
+                        payCase = 2;
+                    }else if(payCase === 0){
+                        for(let i = 0; i < payment.food.length ; i++){
+                            const br =  document.createElement("br");
+                            const text = document.createElement("h"); 
+                            
+                            text.innerText = (i+1) +"." +  Array(Math.ceil((30 - payment.food[i].length)/2)).fill('\xa0').join(' ') +  payment.food[i] + Array(Math.ceil((30 - payment.food[i].length)/2)).fill('\xa0').join(' ') + payment.cost[i] ; 
+                            buttonContainer.appendChild(text);
+                            buttonContainer.appendChild(br);        
+                        }
+                        const text2 = document.createElement("h");
+                        text2.innerText = `amount:${amount}`;
+                        buttonContainer.appendChild(text2);
+                        if(discounted != 100){
+                            const dis = document.createElement("h");
+                            dis.innerText = `discounted ${100 - discounted}%`
+                        }
+                        document.getElementById("pay").innerHTML = "next";
+                        payCase = 1;
+                    }else if(payCase ===2){
+                        resetPay();    
+                        menuChoose(0,'food-container',true);
+                    }
+
+                }else{
+                    for (let i = 0; i < payment.food.length; i++) {
+                        const button = document.createElement("button");
+                        button.textContent = payment.food[i];
+                        button.style.color = "white";
+                        i === record? button.style.backgroundColor = "rgb(140, 191, 221)":button.style.backgroundColor = "rgb(42, 69, 165)";
+                        button.onclick = function () {
+                            record = i;
+                            menuChoose(0, "food-container");
+                        };
+                        buttonContainer.appendChild(button);
+                    }
+                    resetPay()
                 }
             break;
+
 
         }
     }
@@ -177,24 +247,30 @@
         const foodContainer = document.getElementById("food-container");
         const amountContainer = document.getElementById("amount-container");
         if(payment.cost[record]){    
-            if(mode=== "all"){
-                payment.food.filter((foods)=>{
-                    //food === payment.food[record]? valueS += payment.cost[payment.food.findIndex(food === food)]:valueS+=0;
-                    return foods !== payment.food[record];
-                })
-                
+            if(mode === "all"){
+                const trash = payment.food[record];
+                while(payment.food.includes(trash)){
+                    for(let i=0;i<payment.food.length;i++){
+                        if(payment.food[i] === trash){
+                            amount -= payment.cost[i]; 
+                            payment.food.splice(i,1);
+                            payment.cost.splice(i,1);
+                            break;
+                        }                    
+                    }
+                }
             }else{
                 amount -= payment.cost[record]; 
                 payment.food.splice(record,1);
                 payment.cost.splice(record,1);
-        }    
+            }    
             amountContainer.innerHTML = `amount:${amount}`;
         }else if(payment.cost[record-1]){
             record -= 1;
         }else{
             record = -1;
         }
-        menuChoose(record,"food-container")
+            menuChoose(record,"food-container")
         }
 
 </script>
