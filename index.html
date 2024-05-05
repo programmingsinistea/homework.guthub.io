@@ -183,14 +183,18 @@
                         input.type = "text";
                         const br =  document.createElement("br");
                         const button = document.createElement("button");
-                        button.innerHTML = "summit";
+                        button.innerHTML  = "summit";
                         button.onclick = () => {
-                            const V = document.getElementById("code").value;
-                            for(let i = 0 ; i < promoCode.length; i++ ){
-                                if(promoCode[i].includes(V)){
-                                    discounted = products[i][1];
-                                    break;
+                            const input = document.getElementById("code").value;
+                            for(let i = 0; i < promoCode.length;i++){
+                                if(promoCode[i][0] === input){
+                                    alert("available code")
+                                    discounted = promoCode[i][1];   
+                                    amount = Math.floor(amount * (discounted/100));
                                 }
+                            }
+                            if(discounted === 100){
+                                alert("not available promo code entered")
                             }
                         }
                         buttonContainer.appendChild(input);
@@ -208,18 +212,29 @@
                             buttonContainer.appendChild(text);
                             buttonContainer.appendChild(br);        
                         }
-                        const text2 = document.createElement("h");
-                        text2.innerText = `amount:${amount}`;
-                        buttonContainer.appendChild(text2);
-                        if(discounted != 100){
-                            const dis = document.createElement("h");
-                            dis.innerText = `discounted ${100 - discounted}%`
+                        if(id === 1){
+                            document.getElementById("textIn").innerHTML = "confirm?"
+                            document.getElementById("pay").innerHTML = "confirm";
+                            payCase = 3;
+                        }else{
+                            document.getElementById("pay").innerHTML = "next";
+                            payCase = 1;
                         }
-                        document.getElementById("pay").innerHTML = "next";
-                        payCase = 1;
+                        const text2 = document.createElement("h");
+                        if(discounted != 100){
+                            text2.innerText = `amount:${amount} discounted ${100 - discounted}%`
+                            amountContainer.textContent = `amount:${amount} (discounted ${100 - discounted}%)`;
+                        }else{
+                            text2.innerText = `amount:${amount}`;
+                            
+                        }
+                        buttonContainer.appendChild(text2);
+                        
                     }else if(payCase ===2){
                         resetPay();    
-                        menuChoose(0,'food-container',true);
+                        menuChoose(1,'food-container',true);
+                    }else if(payCase === 3 ){
+                        alert(`thank you for ordering, You have paid ${amount} dollar. please wait for ur number ${Math.floor(Math.random()*100)}`)
                     }
 
                 }else{
