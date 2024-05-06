@@ -1,1 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>orderingSystem But in Python</title>
+</head>
+<body onload='menuChoose("food")'>
+<link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
+<style>
+    body {
+        background-color: rgb(248, 250, 255);
+        color: black;
+    }
+    a:link {
+        color: #000000;
+    }   
+    a:visited {
+        color: rgb(140, 191, 221);
+    }  
+    a:hover {
+        color: #FF00FF;
+    }  
+    a:active {
+        color: #0000FF;
+    }
+    button {
+        color: white;
+        background-color: rgb(42, 69, 165);
+        border-color: black;
+        width: 100px;
+        height: 50px;
+    }
+    button:hover {
+        background-color:rgb(32, 51, 120);
+        width: 110px;
+    }
+    #menu {
+        float: left;
+        text-align: center;
+        word-spacing: 1cm;
+        width: 100%;
+        border-style: dashed;
+        border-color: brown;
+    }
+    #menu button {
+        display: inline-block; /* Display buttons in a row */
+        margin: 5px; /* Add margin for spacing */
+    }
+    #main {
+        border-style: dotted;
+        border-color: brown;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        max-height: 150px;
+        overflow-y: auto;
+        padding: 5px;
+        margin: 10px;
+        text-align: center;
+    }  
+    .content {
+        border-style: dotted;
+        border-color: brown;
+        border-width: 2px;
+        border-radius: 5px;
+        padding: 5px;
+        margin: 5px;    
+        display: inline-block;
+        height: 200px;
+    }
+    #header {
+        border-style: dotted;
+        border-color: brown;
+        text-align: center;
+    }
+    #pay {
+        float: right;
+    }
 
+    #backButton{
+        top: 0px;
+    }
+
+</style>
+
+<div id="header">
+    <h1 class="text">ordering system</h1><br> 
+    <button id="login">{login}(uncompleted))</button>
+    <p id="amount-container">0</p>
+</div>
+<p1>menu :</p1>
+<div id="menu">
+    <button id="food" onclick='menuChoose("food","button-container")'>{food}</button>
+    <button id="drink" onclick='menuChoose("drink","button-container")'>{drink}</button>
+    <button id="set" onclick='menuChoose("set","button-container")'>{set}</button>
+    <button id="other" onclick='menuChoose("other","button-container")'>{other}</button>
+</div>
+
+<div id="main">
+    <p1>you can order:</p1>
+    <div id="button-container"></div>
+</div>
+<div id="main" onload='menuChoose(record,"food-container")'>
+    <p1 id="textIn">you have ordered:</p1>
+    <div id="food-container"></div>
+</div>
+<div id = "backButton">
+    <button onclick="clearAmount()">clear</button>    <button onclick="clearAmount('all')">clearAll</button>
+    <button id="pay" onclick="menuChoose(0,'food-container',true)">pay</button>
+</div>
+
+<script>
+    let discounted = 100;
+    let payCase = 0;
+    let payment = {
+        food: [],
+        cost: []
+    };
+    let selection = "";
+    let products = {
+        food: [["Burgers", 30],["BigMac", 20],["popcorn", 24],["corn",13],],
+        other: [["McChicken`", 20],["McNuggets", 20],["Fries", 15],["ApplePie", 15],],
+        set: [["HappyMeal", 60],["burgerSet1",57],["friesSet2",40],["mcChickenSet3",46]],
+        drink: [["Cola", 15],["sprite", 15],["lemonTea",19],["appleJuice",18],]
+    }; 
+    let promoCode = [
+        ["promoCode2024",90],
+        ["helloWorld",80],
+        ["202555440",85],
+        ["orderingSystem",75],
+    ]
+    let record = -1;
+/*
+    if (typeof(Storage) === "undefined") {
+        alert("local storage not supported in the browser");
+    } else {
+        if (localStorage.length) {
+            alert("localSave founded");
+        } else {
+            alert("no localSave founded");
+        }
+    }
+    */
+    function resetPay(){
+        payCase = 0;
+        document.getElementById("pay").innerHTML = "pay";
+        document.getElementById("textIn").innerHTML = "you have ordered:"
+    }
+    var amount = 0;
+    const amountContainer = document.getElementById("amount-container");
+    
+    function buttonClick(name, cost) {
+        amount += cost;
+        amountContainer.textContent = `amount:${amount}`;
+        payment.cost.push(cost);
+        payment.food.push(name);
+    }
+
+    function menuChoose(id, target,cases) {
+        const buttonContainer = document.getElementById(target);
+        buttonContainer.innerHTML = "";
+        switch (target) {
+            case "button-container":
+                resetPay()
+                for (let i = 0; i < products[id].length;i++) {
+                    const button = document.createElement("button");
+                    button.textContent = products[id][i][0];
+                    button.onclick = function () {
+                        let selectedProduct= products[id][i][1];
+                        let selectedName = products[id][i][0];
+                        buttonClick(selectedName, selectedProduct);
+                        menuChoose(record,"food-container")
+                    };
+                    buttonContainer.appendChild(button);
+                }
+                break;
+                
+            case "food-container":
+                if(cases){
+                    if(payCase === 1){
+                        const input = document.createElement("input");
+                        input.id = "code";
+                        input.type = "text";
+                        const br =  document.createElement("br");
+                        const button = document.createElement("button");
+                        button.innerHTML  = "summit";
+                        button.onclick = () => {
+                            const input = document.getElementById("code").value;
+                            for(let i = 0; i < promoCode.length;i++){
+                                if(promoCode[i][0] === input){
+                                    alert("available code")
+                                    discounted = promoCode[i][1];   
+                                    amount = Math.floor(amount * (discounted/100));
+                                }
+                            }
+                            if(discounted === 100){
+                                alert("not available promo code entered")
+                            }
+                        }
+                        buttonContainer.appendChild(input);
+                        buttonContainer.appendChild(br);
+                        buttonContainer.appendChild(button);
+                        document.getElementById("pay").innerHTML = "next";
+                        document.getElementById("textIn").innerHTML = "enter promo code.(optional)"
+                        payCase = 2;
+                    }else if(payCase === 0){
+                        for(let i = 0; i < payment.food.length ; i++){
+                            const br =  document.createElement("br");
+                            const text = document.createElement("h"); 
+                            
+                            text.innerText = (i+1) +"." +  Array(Math.ceil((30 - payment.food[i].length)/2)).fill('\xa0').join(' ') +  payment.food[i] + Array(Math.ceil((30 - payment.food[i].length)/2)).fill('\xa0').join(' ') +"$"+ payment.cost[i] ; 
+                            buttonContainer.appendChild(text);
+                            buttonContainer.appendChild(br);        
+                        }
+                        if(id === 1){
+                            document.getElementById("textIn").innerHTML = "confirm?"
+                            document.getElementById("pay").innerHTML = "confirm";
+                            payCase = 3;
+                        }else{
+                            document.getElementById("pay").innerHTML = "next";
+                            payCase = 1;
+                        }
+                        const text2 = document.createElement("h");
+                        if(discounted != 100){
+                            text2.innerText = `amount:${amount} discounted ${100 - discounted}%`
+                            amountContainer.textContent = `amount:${amount} (discounted ${100 - discounted}%)`;
+                        }else{
+                            text2.innerText = `amount:${amount}`;
+                            
+                        }
+                        buttonContainer.appendChild(text2);
+                        
+                    }else if(payCase ===2){
+                        resetPay();    
+                        menuChoose(1,'food-container',true);
+                    }else if(payCase === 3 ){
+                        alert(`thank you for ordering, You have paid ${amount} dollar. please wait for ur number ${Math.floor(Math.random()*100)}`)
+                    }
+
+                }else{
+                    for (let i = 0; i < payment.food.length; i++) {
+                        const button = document.createElement("button");
+                        button.textContent = payment.food[i];
+                        button.style.color = "white";
+                        i === record? button.style.backgroundColor = "rgb(140, 191, 221)":button.style.backgroundColor = "rgb(42, 69, 165)";
+                        button.onclick = function () {
+                            record = i;
+                            menuChoose(0, "food-container");
+                        };
+                        buttonContainer.appendChild(button);
+                    }
+                    resetPay()
+                }
+            break;
+
+
+        }
+    }
+
+    function clearAmount(mode) {
+        let valueS = 0;
+        const foodContainer = document.getElementById("food-container");
+        const amountContainer = document.getElementById("amount-container");
+        if(payment.cost[record]){    
+            if(mode === "all"){
+                const trash = payment.food[record];
+                while(payment.food.includes(trash)){
+                    for(let i=0;i<payment.food.length;i++){
+                        if(payment.food[i] === trash){
+                            amount -= payment.cost[i]; 
+                            payment.food.splice(i,1);
+                            payment.cost.splice(i,1);
+                            break;
+                        }                    
+                    }
+                }
+            }else{
+                amount -= payment.cost[record]; 
+                payment.food.splice(record,1);
+                payment.cost.splice(record,1);
+            }    
+            amountContainer.innerHTML = `amount:${amount}`;
+        }else if(payment.cost[record-1]){
+            record -= 1;
+        }else{
+            record = -1;
+        }
+            menuChoose(record,"food-container")
+        }
+
+</script>
+<script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+</body>
+</html>
