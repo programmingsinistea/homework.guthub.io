@@ -208,7 +208,7 @@
                             const br =  document.createElement("br");
                             const text = document.createElement("h"); 
                             
-                            text.innerText = (i+1) +"." +  Array(Math.ceil((30 - payment.food[i].length)/2)).fill('\xa0').join(' ') +  payment.food[i] + Array(Math.ceil((30 - payment.food[i].length)/2)).fill('\xa0').join(' ') + payment.cost[i] ; 
+                            text.innerText = (i+1) +"." +  Array(Math.ceil((30 - payment.food[i].length)/2)).fill('\xa0').join(' ') +  payment.food[i] + Array(Math.ceil((30 - payment.food[i].length)/2)).fill('\xa0').join(' ') +"$"+ payment.cost[i] ; 
                             buttonContainer.appendChild(text);
                             buttonContainer.appendChild(br);        
                         }
