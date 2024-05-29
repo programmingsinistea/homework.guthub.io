@@ -1,0 +1,21 @@
+/**
+ * @param {number} numRows
+ * @return {number[][]}
+ */
+var generate = function(numRows) {
+    answers = [];
+    temp = [];
+    for(row = 0; row < numRows; row++){
+        if(row<5){
+            temp = Array.from((11** row).toString()).map(Number);
+            console.log(temp)
+            answers[row] = temp;
+            console.log(answers);
+        }else if(row >=5){
+            for(i=5 ; i <= numRows ; i++){
+                if(row)
+            }
+        }
+    }
+    return answers;
+}
