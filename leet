@@ -12,8 +12,14 @@ var generate = function(numRows) {
             answers[row] = temp;
             console.log(answers);
         }else if(row >=5){
-            for(i=5 ; i <= numRows ; i++){
-                if(row)
+                for(colume=0 ; colume < row + 1  ; colume++){
+                    if(colume === 0 || colume === row - 1){
+                        temp[row][colume] = 1;
+                    }else{
+                        temp[row][colume]=((temp[row-1][colume]+temp[row-1][colume-1]));
+                        
+                    }
+                console.log(answer)
             }
         }
     }
