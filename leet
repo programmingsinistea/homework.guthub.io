@@ -3,25 +3,19 @@
  * @return {number[][]}
  */
 var generate = function(numRows) {
-    answers = [];
-    temp = [];
-    for(row = 0; row < numRows; row++){
-        if(row<5){
-            temp = Array.from((11** row).toString()).map(Number);
-            console.log(temp)
-            answers[row] = temp;
-            console.log(answers);
-        }else if(row >=5){
-                for(colume=0 ; colume < row + 1  ; colume++){
-                    if(colume === 0 || colume === row - 1){
-                        temp[row][colume] = 1;
-                    }else{
-                        temp[row][colume]=((temp[row-1][colume]+temp[row-1][colume-1]));
-                        
-                    }
-                console.log(answer)
-            }
+    let answers = [];
+
+    for (let row = 0; row < numRows; row++) {
+        let temp = new Array(row + 1).fill(0);
+        temp[0] = 1; // 每行的第一個元素是1
+        temp[row] = 1; // 每行的最後一個元素是1
+
+        for (let colume = 1; colume < row; colume++) {
+            temp[colume] = answers[row - 1][colume - 1] + answers[row - 1][colume];
         }
+
+        answers.push(temp);
     }
+
     return answers;
 }
